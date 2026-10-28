@@ -222,8 +222,6 @@ class LazyInstanceNorm1d(_LazyNormBase, _InstanceNorm):
     on lazy modules and their limitations.
 
     Args:
-        num_features: :math:`C` from an expected input of size
-            :math:`(N, C, L)` or :math:`(C, L)`
         eps: a value added to the denominator for numerical stability. Default: 1e-5
         momentum: the value used for the running_mean and running_var computation. Default: 0.1
         affine: a boolean value that when set to ``True``, this module has
@@ -343,8 +341,6 @@ class LazyInstanceNorm2d(_LazyNormBase, _InstanceNorm):
     on lazy modules and their limitations.
 
     Args:
-        num_features: :math:`C` from an expected input of size
-            :math:`(N, C, H, W)` or :math:`(C, H, W)`
         eps: a value added to the denominator for numerical stability. Default: 1e-5
         momentum: the value used for the running_mean and running_var computation. Default: 0.1
         affine: a boolean value that when set to ``True``, this module has
@@ -463,8 +459,6 @@ class LazyInstanceNorm3d(_LazyNormBase, _InstanceNorm):
     on lazy modules and their limitations.
 
     Args:
-        num_features: :math:`C` from an expected input of size
-            :math:`(N, C, D, H, W)` or :math:`(C, D, H, W)`
         eps: a value added to the denominator for numerical stability. Default: 1e-5
         momentum: the value used for the running_mean and running_var computation. Default: 0.1
         affine: a boolean value that when set to ``True``, this module has
