@@ -132,6 +132,7 @@ class _InstanceNorm(_NormBase):
 
         return self._apply_instance_norm(input)
 
+
 class _LazyInstanceNormBase(_LazyNormBase, _InstanceNorm):
     """Lazy base for InstanceNorm; restores InstanceNorm's defaults."""
 
@@ -139,8 +140,8 @@ class _LazyInstanceNormBase(_LazyNormBase, _InstanceNorm):
         self,
         eps: float = 1e-5,
         momentum: float = 0.1,
-        affine: bool = False, # matches InstanceNorms default
-        track_running_stats: bool = False, # matches InstanceNorms default
+        affine: bool = False,  # matches InstanceNorms default
+        track_running_stats: bool = False,  # matches InstanceNorms default
         device=None,
         dtype=None,
         *,
@@ -162,6 +163,7 @@ class _LazyInstanceNormBase(_LazyNormBase, _InstanceNorm):
             input = input.unsqueeze(0)
         self.num_features = input.shape[1]
         super().initialize_parameters(input)
+
 
 class InstanceNorm1d(_InstanceNorm):
     r"""Applies Instance Normalization.
