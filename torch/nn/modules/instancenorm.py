@@ -132,6 +132,36 @@ class _InstanceNorm(_NormBase):
 
         return self._apply_instance_norm(input)
 
+class _LazyInstanceNormBase(_LazyNormBase, _InstanceNorm):
+    """Lazy base for InstanceNorm; restores InstanceNorm's defaults."""
+
+    def __init__(
+        self,
+        eps: float = 1e-5,
+        momentum: float = 0.1,
+        affine: bool = False, # matches InstanceNorms default
+        track_running_stats: bool = False, # matches InstanceNorms default
+        device=None,
+        dtype=None,
+        *,
+        bias: bool = True,
+    ) -> None:
+        super().__init__(
+            eps,
+            momentum,
+            affine,
+            track_running_stats,
+            device,
+            dtype,
+            bias=bias,
+        )
+
+    def initialize_parameters(self, input) -> None:
+        self._check_input_dim(input)
+        if input.dim() == self._get_no_batch_dim():
+            input = input.unsqueeze(0)
+        self.num_features = input.shape[1]
+        super().initialize_parameters(input)
 
 class InstanceNorm1d(_InstanceNorm):
     r"""Applies Instance Normalization.
@@ -212,7 +242,7 @@ class InstanceNorm1d(_InstanceNorm):
             raise ValueError(f"expected 2D or 3D input (got {input.dim()}D input)")
 
 
-class LazyInstanceNorm1d(_LazyNormBase, _InstanceNorm):
+class LazyInstanceNorm1d(_LazyInstanceNormBase):
     r"""A :class:`torch.nn.InstanceNorm1d` module with lazy initialization of the ``num_features`` argument.
 
     The ``num_features`` argument of the :class:`InstanceNorm1d` is inferred from the ``input.size(1)``.
@@ -332,7 +362,7 @@ class InstanceNorm2d(_InstanceNorm):
             raise ValueError(f"expected 3D or 4D input (got {input.dim()}D input)")
 
 
-class LazyInstanceNorm2d(_LazyNormBase, _InstanceNorm):
+class LazyInstanceNorm2d(_LazyInstanceNormBase):
     r"""A :class:`torch.nn.InstanceNorm2d` module with lazy initialization of the ``num_features`` argument.
 
     The ``num_features`` argument of the :class:`InstanceNorm2d` is inferred from the ``input.size(1)``.
@@ -452,7 +482,7 @@ class InstanceNorm3d(_InstanceNorm):
             raise ValueError(f"expected 4D or 5D input (got {input.dim()}D input)")
 
 
-class LazyInstanceNorm3d(_LazyNormBase, _InstanceNorm):
+class LazyInstanceNorm3d(_LazyInstanceNormBase):
     r"""A :class:`torch.nn.InstanceNorm3d` module with lazy initialization of the ``num_features`` argument.
 
     The ``num_features`` argument of the :class:`InstanceNorm3d` is inferred from the ``input.size(1)``.
